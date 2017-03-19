@@ -1,8 +1,11 @@
 var express = require('express');
-var promoRouter = express.Router();
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 var Verify = require('./verify');
 
+var Promotions = require('../models/promotions');
+
+var promoRouter = express.Router();
 promoRouter.use(bodyParser.json());
 
 promoRouter.route('/')
