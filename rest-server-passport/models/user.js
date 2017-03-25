@@ -5,6 +5,8 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var User = new Schema({
     username: String,
     password: String,
+    OauthId: String,
+    OauthToken: String,
     firstname: {
         type: String,
         default: ''
@@ -26,3 +28,4 @@ User.methods.getName = function() {
 User.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', User);
+

@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var authenticate = require('./authenticate');
 
 var config = require('./config');
 
@@ -23,6 +23,7 @@ var users = require('./routes/users');
 var dishRouter = require('./routes/dishRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
+var favoriteRouter = require('./routes/favoriteRouter');
 
 var app = express();
 
@@ -43,14 +44,11 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
+
 // passport config
-var User = require('./models/user');
 app.use(passport.initialize());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -59,6 +57,7 @@ app.use('/users', users);
 app.use('/dishes', dishRouter);
 app.use('/promotions', promoRouter);
 app.use('/leadership', leaderRouter);
+app.use('/favorites', favoriteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
